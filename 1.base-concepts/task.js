@@ -1,7 +1,6 @@
 "use strict";
 
 /*№1*/ 
-/*
 console.log("Задание №1");
 function solveEquation(a, b, c) {
   let arr = [];
@@ -27,7 +26,7 @@ function solveEquation(a, b, c) {
 };
 let result = solveEquation();
 console.log(result);
-*/
+
 /*
 // D > 0 
 let result1 = solveEquation(1, 5, 4);
