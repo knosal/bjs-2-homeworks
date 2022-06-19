@@ -10,27 +10,27 @@ class PrintEditionItem {
   }
 //#2
   fix() {
-    return this.state = this.state * 1.5;
+    this.state = this.state * 1.5;
+    return this.state;
   }
 //#3
-  set newState(state) {
-    if (state < 0) {
-      this.state = 0;
-    } 
-    if (state > 100) {
-      this.state = 100;
+  set state(number) {
+   this._state = number;
+    if (this.state < 0) {
+      this._state = 0;
+    } else if (this.state > 100) {
+      this._state = 100;
     } else {
-      this.state = state;
+      this._state = this.state;
     }
-    this._newState = state;
   }
 //#4
-  get newState() {
-    return this._newState;
+  get state() {
+    return this._state;
   }
 }
 //TEST
-/*const sherlock = new PrintEditionItem (
+const sherlock = new PrintEditionItem (
   "Полное собрание повестей и рассказов о Шерлоке Холмсе в одном томе",
   2019,
   1008
@@ -42,7 +42,7 @@ console.log(sherlock.state); //100*/
 //#5
 class Magazine extends PrintEditionItem {
    constructor(author, name, releaseDate, pagesCount) {
-     super(author, name, releaseDate, pagesCount);
+    super(author, name, releaseDate, pagesCount);
     this.type = "magazine";
   }
 }
@@ -54,16 +54,6 @@ class Book extends PrintEditionItem {
     this.type = "book";
   }
 }
-//TEST
-/*
-const human = new Book(
-  "Аркадий и Борис Стругацкие",  
-  "Пикник на обочине",
-  1972,
-  168
-);
-console.log(human)
-console.log(human.author); */
 //#7
 class NovelBook extends Book {
    constructor(author, name, releaseDate, pagesCount) {
@@ -84,7 +74,7 @@ class DetectiveBook extends Book {
   }
 }
 //TEST
-/*const picknick = new FantasticBook (
+const picknick = new FantasticBook (
   "Аркадий и Борис Стругацкие",
   "Пикник на обочине",
   1972,
@@ -95,16 +85,18 @@ picknick.state = 10;
 console.log(picknick.state); //10
 picknick.fix();
 console.log(picknick.state); //15*/
+
 console.log("---------Задание №2---------");
 //#1
-class Library {
-  constructor(name = "") {
-    this.name = name;
-    this.books = [];
-  }
+class Library extends PrintEditionItem { 
+    constructor (name, releaseDate, pagesCount) {
+        super(releaseDate, pagesCount);
+        this.name = name;
+        this.books = [];
+    }
 //#2
    addBook(book = {}) {
-    if (!this.state || this.state > 30) this.books.push(book)
+    if (this.state > 30) this.books.push(book)
     else console.log(`Состояние книги ${this.state} -> "Книга в плохом состоянии"`);
   }
 //#3
@@ -113,23 +105,31 @@ class Library {
     if (publication) return publication;
     else return null; 
   }
+  /*  for(let i = 0; i < this.books.length; i++) {
+        if(this.books[i][type] === value) {
+            return this.books[i];
+        } 
+    }
+    return null;*/
 //#4 
-  giveBookByName(bookName) {
+  /*giveBookByName(bookName) {
     let bookFinObject = this.books.find((object) => {
      if (object.name === bookName) return object;
      else return null;
    }); 
     console.log(bookFinObject);
     const index = this.books.findIndex((object) => (object.name === bookName));
-    this.books.splice(index, 1);
+    return this.books.splice(index, 1)[0];
+  }*/
+  giveBookByName(bookName) {
+    for(let i = 0; i < this.books.length; i++) {
+        if (this.books[i].name === bookName) {
+                return this.books.splice(i, 1)[0];
+        }
+    }
+    return null;
   }
 }
-/*
-	Student.prototype.exclude = function (reason) {
-		delete this.subject;
-		delete this.marks;
-		this.excluded = reason;
-	};*/
 //TEST
 const library = new Library("Библиотека имени Ленина");
 
